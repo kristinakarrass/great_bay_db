@@ -47,22 +47,27 @@ function postItem() {
     }, {
         type: "input",
         name: "price",
-        message: "Set your minimum price."
+        message: "Set your minimum price.",
+        validate: function(value) {
+            if (isNaN(value) === false) {
+                return true;
+            }
+            return false;
+        }
     }, {
         type: "list",
         name: "quality",
         message: "Choose the condition for your item.",
         choices: ["new", "gently used", "used"]
     }]).then(function(answer) {
-        console.log("You have successfully posted your item.");
+        //get information of item the user wants to post
         console.log(answer.itemName + " | " + answer.price + " | " + answer.quality);
         connection.query("INSERT INTO items SET ?", { itemName: answer.itemName, price: answer.price, quality: answer.quality }, function(err, res) {
             if (err) throw err;
+            console.log("You have successfully posted your item.");
             startBay();
         });
     });
-
-
 };
 
 function bidOnItem() {
