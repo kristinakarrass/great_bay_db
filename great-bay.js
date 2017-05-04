@@ -82,30 +82,28 @@ function bidOnItem() {
             name: "bid",
             message: "Which item would you like to bid on?",
             choices: availableItems
+        }, {
+            type: "input",
+            name: "bidPrice",
+            message: "How much would you like to bid?"
         }]).then(function(answer) {
             bidItem = answer.bid;
             console.log(answer.bid);
-            inquirer.prompt([{
-                type: "input",
-                name: "bidPrice",
-                message: "How much would you like to bid?",
-            }]).then(function(answer) {
-                bidPrice = parseInt(answer.bidPrice);
-                console.log(bidPrice);
-                connection.query('SELECT * FROM items WHERE itemName=?', [bidItem], function(err, response) {
-                    itemPrice = parseInt(response[0].price);
-                    itemKey = response[0].id;
-                    if (bidPrice > itemPrice) {
-                        console.log("Congratulations! You are the highest bidder!");
-                        connection.query("UPDATE items SET ? WHERE ?", [{price: bidPrice}, {id: itemKey}], function(err, response) {});
-                        startBay();
-                    } else {
-                        console.log("Sorry, try a higher bid next time.");
-                        startBay();
-                    }
-                });
-            })
-        })
+            bidPrice = parseInt(answer.bidPrice);
+            console.log(bidPrice);
+            connection.query('SELECT * FROM items WHERE itemName=?', [bidItem], function(err, response) {
+                itemPrice = parseInt(response[0].price);
+                itemKey = response[0].id;
+                if (bidPrice > itemPrice) {
+                    console.log("Congratulations! You are the highest bidder!");
+                    connection.query("UPDATE items SET ? WHERE ?", [{ price: bidPrice }, { id: itemKey }], function(err, response) {});
+                    startBay();
+                } else {
+                    console.log("Sorry, try a higher bid next time.");
+                    startBay();
+                }
+            });
+        });
     });
 };
 
