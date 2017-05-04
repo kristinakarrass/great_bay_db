@@ -1,0 +1,12 @@
+CREATE DATABASE great_bay_db;
+
+USE great_bay_db;
+
+CREATE TABLE items (
+id INT NOT NULL AUTO_INCREMENT,
+itemName VARCHAR(50) NOT NULL,
+price INTEGER(11) NOT NULL,
+condition VARCHAR(50),
+sold BOOLEAN DEFAULT FALSE NOT NULL,
+PRIMARY KEY(id)
+);
